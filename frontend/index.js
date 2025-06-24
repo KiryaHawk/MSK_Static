@@ -1,7 +1,7 @@
 const API_URL = 'https://pto-api.onrender.com/api';
 
 ymaps.ready(function () {
-    fetch('/data/points.json')
+    fetch('data/points.json')
         .then(response => response.json())
         .then(obj => {
             const searchControls = new ymaps.control.SearchControl({
