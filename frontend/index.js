@@ -107,10 +107,15 @@ ymaps.ready(function () {
   </label><br><br>
   <label><b>Цвет:</b>
     <select id="color-select">
-      <option value="gray" ${color === "gray" ? "selected" : ""}>Серый</option>
-      <option value="red" ${color === "red" ? "selected" : ""}>Красный</option>
-      <option value="yellow" ${color === "yellow" ? "selected" : ""}>Жёлтый</option>
-      <option value="green" ${color === "green" ? "selected" : ""}>Зелёный</option>
+        <option value="gray" ${color === "gray" ? "selected" : ""}>Серый</option>
+        <option value="red" ${color === "red" ? "selected" : ""}>Красный</option>
+        <option value="yellow" ${color === "yellow" ? "selected" : ""}>Жёлтый</option>
+        <option value="green" ${color === "green" ? "selected" : ""}>Зелёный</option>
+        <option value="blue" ${color === "blue" ? "selected" : ""}>Синий</option>
+        <option value="orange" ${color === "orange" ? "selected" : ""}>Оранжевый</option>
+        <option value="purple" ${color === "purple" ? "selected" : ""}>Фиолетовый</option>
+        <option value="pink" ${color === "pink" ? "selected" : ""}>Розовый</option>
+        <option value="brown" ${color === "brown" ? "selected" : ""}>Коричневый</option>
     </select>
   </label><br><br>
   <button onclick="window.saveCommentAndColor('${objectId}')">Сохранить</button>
