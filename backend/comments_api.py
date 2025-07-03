@@ -7,10 +7,9 @@ import os
 
 app = Flask(__name__)
 
-# Настройка CORS
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+# Явно разрешаем CORS для вашего домена на GitHub Pages
+CORS(app, resources={r"/api/*": {"origins": "*"}})  # "*" позволяет запросы с любого домена
 
-# Подключение к базе данных
 def get_db():
     db = SessionLocal()
     try:
@@ -49,13 +48,6 @@ def get_all():
     db = next(get_db())
     all_comments_colors = db.query(CommentColor).all()
     return jsonify({item.object_id: {"comment": item.comment, "color": item.color} for item in all_comments_colors})
-
-@app.route("/api/get_colors")
-def get_colors():
-    db = next(get_db())
-    colors = db.query(CommentColor.color).distinct().all()
-    unique_colors = [color[0] for color in colors if color[0]]
-    return jsonify(unique_colors)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

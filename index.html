@@ -6,72 +6,23 @@
     <meta name="title" content="Карта ПТО с комментариями и цветами">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=6c42bc19-1776-466a-900c-75c1c68e67f4" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
     <title>Карта ПТО — комментарии и цветовая маркировка</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        #map {
-            max-width: 100%;
-            width: auto;
-            height: 80vh;
-        }
-
-        #colorPickerContainer, #availableColors {
-            padding: 10px;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        #availableColors div {
-            width: 20px;
-            height: 20px;
-            display: inline-block;
-            margin: 2px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-        }
-    </style>
 </head>
 <body>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    #map {
+        max-width: 100%;
+        width: auto;
+        height: 100vh;
+    }
+</style>
 <div id="map"></div>
-<div id="colorPickerContainer">
-    <div id="colorPicker"></div>
-</div>
-<div id="availableColors"></div>
 <script src="frontend/index.js"></script>
-<script>
-    // Инициализация палитры
-    const colorPicker = new iro.ColorPicker("#colorPicker", {
-        width: 200,
-        color: "#f00",
-    });
-
-    // Получение доступных цветов с сервера
-    fetch("https://pto-api.onrender.com/api/get_colors")
-        .then(response => response.json())
-        .then(colors => {
-            const colorsContainer = document.getElementById("availableColors");
-            colors.forEach(color => {
-                const colorElem = document.createElement("div");
-                colorElem.style.backgroundColor = color;
-                colorsContainer.appendChild(colorElem);
-
-                colorElem.onclick = function() {
-                    colorPicker.color.set(color);
-                };
-            });
-        });
-
-    colorPicker.on('color:change', function(color) {
-        const selectedColor = color.hexString;
-        console.log("Выбран цвет:", selectedColor);
-        // Здесь вы можете отправить выбранный цвет на сервер
-    });
-</script>
 </body>
 </html>
