@@ -1,39 +1,52 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import json, os
+from sqlalchemy.orm import Session
+from database import SessionLocal
+from models import CommentColor
+import os
 
 app = Flask(__name__)
 CORS(app)
-DATA_FILE = os.path.join(os.path.dirname(__file__), "comments_colors.json")
 
-def load_data():
-    if os.path.exists(DATA_FILE):
-        with open(DATA_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
-
-def save_data(data):
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+# Подключение к базе данных
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 @app.route("/api/get/<object_id>")
 def get(object_id):
-    data = load_data()
-    return jsonify(data.get(object_id, {"comment": "", "color": ""}))
+    db = next(get_db())
+    comment_color = db.query(CommentColor).filter(CommentColor.object_id == object_id).first()
+    if comment_color:
+        return jsonify({"comment": comment_color.comment, "color": comment_color.color})
+    return jsonify({"comment": "", "color": ""})
 
 @app.route("/api/set/<object_id>", methods=["POST"])
 def set_(object_id):
-    data = load_data()
-    j = request.get_json(force=True)
-    comment = j.get("comment", "")
-    color = j.get("color", "")
-    data[object_id] = {"comment": comment, "color": color}
-    save_data(data)
+    db = next(get_db())
+    data = request.get_json(force=True)
+    comment = data.get("comment", "")
+    color = data.get("color", "")
+
+    existing = db.query(CommentColor).filter(CommentColor.object_id == object_id).first()
+    if existing:
+        existing.comment = comment
+        existing.color = color
+    else:
+        new_entry = CommentColor(object_id=object_id, comment=comment, color=color)
+        db.add(new_entry)
+
+    db.commit()
     return jsonify({"status": "ok"})
 
 @app.route("/api/get_all")
 def get_all():
-    return jsonify(load_data())
+    db = next(get_db())
+    all_comments_colors = db.query(CommentColor).all()
+    return jsonify({item.object_id: {"comment": item.comment, "color": item.color} for item in all_comments_colors})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
