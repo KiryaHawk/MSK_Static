@@ -1,0 +1,6 @@
+flask
+flask_cors
+waitress
+SQLAlchemy
+psycopg2-binary
+python-dotenv
