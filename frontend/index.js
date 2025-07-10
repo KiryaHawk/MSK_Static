@@ -34,9 +34,16 @@ ymaps.ready(function () {
                 geoObjectOpenBalloonOnClick: true,
                 geoObjectHasBalloon: true,
                 geoObjectOpenHintOnHover: true,
-
-                clusterOpenBalloonOnClick: true,
-                clusterBalloonContentLayout: "cluster#balloonAccordion"
+                clusterBalloonItemContentLayout: ymaps.templateLayoutFactory.createClass(
+                    '<div style="padding: 10px;">' +
+                        '<b>{{ properties.name }}</b><br>' +
+                        '{{ properties.address }}<br>' +
+                        '<button onclick="window.openPlacemark({{ properties.id }})">Открыть</button>' +
+                    '</div>'
+                ),
+                clusterBalloonContentLayoutWidth: 300,
+                clusterBalloonContentLayoutHeight: 200,
+                clusterBalloonPanelMaxMapArea: 0
             });
 
             let minLat = Infinity, maxLat = -Infinity;
