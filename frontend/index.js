@@ -33,7 +33,10 @@ ymaps.ready(function () {
                 clusterDisableClickZoom: false,
                 geoObjectOpenBalloonOnClick: true,
                 geoObjectHasBalloon: true,
-                geoObjectOpenHintOnHover: true
+                geoObjectOpenHintOnHover: true,
+
+                clusterOpenBalloonOnClick: true,
+                clusterBalloonContentLayout: "cluster#balloonAccordion"
             });
 
             let minLat = Infinity, maxLat = -Infinity;
