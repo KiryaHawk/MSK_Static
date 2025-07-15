@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from sqlalchemy.orm import Session
 from database import SessionLocal
-from backend.models import CommentColor
+from models import CommentColor
 import os
 
 app = Flask(__name__)
